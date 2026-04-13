@@ -37,6 +37,7 @@ public class Hotel {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    //updation time stamp
     private LocalDateTime updatedAt;
 
     @Embedded
