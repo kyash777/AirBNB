@@ -1,6 +1,7 @@
 package com.yash.projects.airBnb.service;
 
 import com.yash.projects.airBnb.dto.HotelDTO;
+import com.yash.projects.airBnb.dto.HotelInfoDto;
 import com.yash.projects.airBnb.entity.Hotel;
 
 public interface HotelService {
@@ -9,4 +10,6 @@ public interface HotelService {
     HotelDTO updateHotelById(Long id, HotelDTO hotel);
     Boolean deleteHotelById(Long id);
     void activateHotelById(Long id);
+
+    HotelInfoDto getHotelInfoById(Long hotelId);
 }
