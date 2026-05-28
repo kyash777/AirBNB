@@ -2,10 +2,12 @@ package com.yash.projects.airBnb.service;
 
 
 import com.yash.projects.airBnb.dto.HotelDTO;
+import com.yash.projects.airBnb.dto.HotelPriceDTO;
 import com.yash.projects.airBnb.dto.HotelSearchRequestDTO;
 import com.yash.projects.airBnb.entity.Hotel;
 import com.yash.projects.airBnb.entity.Inventory;
 import com.yash.projects.airBnb.entity.Room;
+import com.yash.projects.airBnb.repository.HotelMinPriceRepository;
 import com.yash.projects.airBnb.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +28,14 @@ public class InventoryServiceImplementation implements InventoryService{
 
     private final InventoryRepository inventoryRepository;
     private final ModelMapper modelMapper;
+    private final HotelMinPriceRepository hotelMinPriceRepository;
 
     @Override
-    public Page<HotelDTO> searchHotels(HotelSearchRequestDTO hotelSearchRequest) {
+    public Page<HotelPriceDTO> searchHotels(HotelSearchRequestDTO hotelSearchRequest) {
         Pageable pageable = PageRequest.of(hotelSearchRequest.getPage(),hotelSearchRequest.getSize());
         Long dateCount= ChronoUnit.DAYS.between(hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate())+1;
 
-        Page<Hotel> hotelPage=inventoryRepository.findHotelByAvailableInventory(
+        Page<HotelPriceDTO> hotelPage=hotelMinPriceRepository.findHotelByAvailableInventory(
                 hotelSearchRequest.getCity(),
                 hotelSearchRequest.getStartDate(),
                 hotelSearchRequest.getEndDate(),
@@ -41,7 +44,7 @@ public class InventoryServiceImplementation implements InventoryService{
                 pageable
         );
 
-        return hotelPage.map((element) -> modelMapper.map(element, HotelDTO.class));
+        return hotelPage;
 
     }
 
