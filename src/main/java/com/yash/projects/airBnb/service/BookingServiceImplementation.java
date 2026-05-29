@@ -6,11 +6,13 @@ import com.yash.projects.airBnb.dto.GuestDTO;
 import com.yash.projects.airBnb.entity.*;
 import com.yash.projects.airBnb.entity.enums.BookingStatus;
 import com.yash.projects.airBnb.exception.ResourceNotFoundException;
+import com.yash.projects.airBnb.exception.UnAuthorizedException;
 import com.yash.projects.airBnb.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -79,6 +81,11 @@ public class BookingServiceImplementation implements BookingService {
 
         Booking booking = bookingRepository.findById(bookindId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + bookindId));
+        User user = getCurrentUser();
+
+        if(user.equals(booking.getUser())){
+            throw new UnAuthorizedException("Booking does nor belong to this user with id:"+ user.getId());
+        }
 
         if(hasBookingExpired(booking)){
             throw new IllegalStateException("Booking booking has expired");
@@ -103,9 +110,7 @@ public class BookingServiceImplementation implements BookingService {
     }
 
     public User getCurrentUser(){
-        User user = new User();
-        user.setId(1L);
-        return user;
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }

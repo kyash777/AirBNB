@@ -39,8 +39,6 @@ public class InventoryServiceImplementation implements InventoryService{
                 hotelSearchRequest.getCity(),
                 hotelSearchRequest.getStartDate(),
                 hotelSearchRequest.getEndDate(),
-                hotelSearchRequest.getRoomsCount(),
-                dateCount,
                 pageable
         );
 

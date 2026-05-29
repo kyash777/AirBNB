@@ -26,8 +26,6 @@ public interface HotelMinPriceRepository extends JpaRepository<HotelMinPrice, Lo
             @Param("city") String city,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
-            @Param("roomsCount") Integer roomsCount,
-            @Param("dateCount") Long dateCount,
             Pageable pageable
     );
 
