@@ -1,6 +1,8 @@
 package com.yash.projects.airBnb.advice;
 
 import com.yash.projects.airBnb.exception.ResourceNotFoundException;
+import com.yash.projects.airBnb.exception.UnAuthorizedException;
+import com.yash.projects.airBnb.exception.BadRequestException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ApiResponse<?>> handleAccessDeniedException(AccessDeniedException ex) {
         ApiError apiError = ApiError.builder().status(HttpStatus.FORBIDDEN).message(ex.getMessage()).build();
+        return this.buildErrorResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({UnAuthorizedException.class})
+    public ResponseEntity<ApiResponse<?>> handleUnAuthorizedException(UnAuthorizedException ex) {
+        ApiError apiError = ApiError.builder().status(HttpStatus.FORBIDDEN).message(ex.getMessage()).build();
+        return this.buildErrorResponseEntity(apiError);
+    }
+
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<ApiResponse<?>> handleBadRequestException(BadRequestException ex) {
+        ApiError apiError = ApiError.builder().status(HttpStatus.BAD_REQUEST).message(ex.getMessage()).build();
         return this.buildErrorResponseEntity(apiError);
     }
 
