@@ -130,8 +130,14 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     );
 
 
-    Collection<Object> findByRoomOrderByDate(Room room);
+    List<Inventory> findByRoomOrderByDate(Room room);
 
+    @Query("""
+            SELECT i
+            FROM Inventory i
+            WHERE i.room.id = :roomId
+              AND i.date BETWEEN :startDate AND :endDate
+            """)
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     List<Inventory> getInventoryAndLockBeforeUpdate(@Param("roomId") Long roomId,
                                                     @Param("startDate") LocalDate startDate,

@@ -2,6 +2,7 @@ package com.yash.projects.airBnb.controller;
 
 import com.yash.projects.airBnb.dto.RoomDTO;
 import com.yash.projects.airBnb.service.RoomService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/hotels/{hotelId}/rooms")
+@SecurityRequirement(name = "bearerAuth")
 
 public class RoomAdminController {
 
@@ -42,7 +44,6 @@ public class RoomAdminController {
     }
 
     @PutMapping("/{roomId}")
-    @Operation(summary = "Update a room", tags = {"Admin Inventory"})
     public ResponseEntity<RoomDTO> updateRoomById(@PathVariable Long hotelId, @PathVariable Long roomId,
                                                   @RequestBody RoomDTO roomDto) {
         return ResponseEntity.ok(roomService.updateRoomById(hotelId, roomId, roomDto));

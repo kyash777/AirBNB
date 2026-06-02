@@ -1,6 +1,7 @@
 package com.yash.projects.airBnb.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import com.yash.projects.airBnb.dto.BookingDTO;
 import com.yash.projects.airBnb.dto.BookingRequestDTO;
 import com.yash.projects.airBnb.dto.GuestDTO;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bookings")
+@SecurityRequirement(name = "bearerAuth")
 
 public class HotelBookingController {
     private final BookingService bookingService;

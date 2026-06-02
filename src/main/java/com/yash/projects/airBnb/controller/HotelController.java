@@ -5,6 +5,7 @@ import com.yash.projects.airBnb.dto.HotelDTO;
 import com.yash.projects.airBnb.dto.HotelReportDTO;
 import com.yash.projects.airBnb.service.BookingService;
 import com.yash.projects.airBnb.service.HotelService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("/admin/hotels")
 @RequiredArgsConstructor
 @Slf4j
+@SecurityRequirement(name = "bearerAuth")
 
 public class HotelController {
     private final HotelService hotelService;
@@ -60,19 +62,16 @@ public class HotelController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all hotels owned by admin", tags = {"Admin Hotel"})
     public ResponseEntity<List<HotelDTO>> getAllHotels() {
         return ResponseEntity.ok(hotelService.getAllHotels());
     }
 
     @GetMapping("/{hotelId}/bookings")
-    @Operation(summary = "Get all bookings of a hotel", tags = {"Admin Bookings"})
     public ResponseEntity<List<BookingDTO>> getAllBookingsByHotelId(@PathVariable Long hotelId) {
         return ResponseEntity.ok(bookingService.getAllBookingsByHotelId(hotelId));
     }
 
     @GetMapping("/{hotelId}/reports")
-    @Operation(summary = "Generate a bookings report of a hotel", tags = {"Admin Bookings"})
     public ResponseEntity<HotelReportDTO> getHotelReport(@PathVariable Long hotelId,
                                                          @RequestParam(required = false) LocalDate startDate,
                                                          @RequestParam(required = false) LocalDate endDate) {

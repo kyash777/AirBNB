@@ -12,6 +12,7 @@ import com.yash.projects.airBnb.entity.User;
 import com.yash.projects.airBnb.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,17 @@ public class CheckoutServiceImplementation implements CheckoutService{
     private final BookingRepository bookingRepository;
     private final RequestOptions stripeRequestOptions;
 
+    @Value("${stripe.secret.key:}")
+    private String stripeSecretKey;
+
     @Override
     public String getCheckoutSession(Booking booking, String successUrl, String failureUrl) {
         log.info("Creating session for booking with ID: {}", booking.getId());
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (stripeSecretKey == null || stripeSecretKey.isBlank()) {
+            throw new IllegalStateException("Stripe secret key is not configured");
+        }
 
         // Pre-check booking amount to avoid Stripe's amount_too_small error.
         // Stripe requires the converted amount to be at least $0.50. Use a sensible

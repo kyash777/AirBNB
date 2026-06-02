@@ -28,4 +28,6 @@ public class PricingService {
                 .map(this::calculateDynamicPricing)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+
 }

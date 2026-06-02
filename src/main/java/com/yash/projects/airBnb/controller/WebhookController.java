@@ -16,11 +16,15 @@ public class WebhookController {
 
     private final BookingService bookingService;
 
-    @Value("${stripe.webhook.secret}")
+    @Value("${stripe.webhook.secret:}")
     private String endpointSecret;
 
     @PostMapping("/payment")
     public ResponseEntity<Void> capturePayments(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
+        if (endpointSecret == null || endpointSecret.isBlank()) {
+            throw new IllegalStateException("Stripe webhook secret is not configured");
+        }
+
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
             bookingService.capturePayment(event);

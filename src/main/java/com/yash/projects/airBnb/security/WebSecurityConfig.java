@@ -43,8 +43,10 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("HOTEL_MANAGER")
                                 .requestMatchers("/bookings/**").authenticated()
+                                .requestMatchers("/users/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(exHandlingConfig -> exHandlingConfig.accessDeniedHandler(accessDeniedHandler()));

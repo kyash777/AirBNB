@@ -122,7 +122,7 @@ public class PricingUpdateService {
 
     public void updateInventoryPrices(List<Inventory> inventoryList){
         inventoryList.forEach(inventory ->{
-            BigDecimal dynamicPrice = pricingService.calculateDtnamicPricing(inventory);
+            BigDecimal dynamicPrice = pricingService.calculateDynamicPricing(inventory);
             inventory.setPrice(dynamicPrice);
 
         } );

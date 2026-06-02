@@ -9,7 +9,7 @@ import com.stripe.net.RequestOptions;
 public class StripeConfig {
 
     @Bean
-    public RequestOptions stripeRequestOptions(@Value("${stripe.secret.key}") String stripeSecretKey) {
+    public RequestOptions stripeRequestOptions(@Value("${stripe.secret.key:}") String stripeSecretKey) {
         return RequestOptions.builder()
                 .setApiKey(stripeSecretKey)
                 .build();
