@@ -18,6 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.yash.projects.airBnb.util.AppUtils.getCurrentUser;
 
 @Service
 @Slf4j
@@ -134,6 +137,18 @@ public class HotelServiceImplementation implements HotelService {
                 .build();
 
 
+    }
+
+    @Override
+    public List<HotelDTO> getAllHotels() {
+        User user = getCurrentUser();
+        log.info("Getting all hotels for the admin user with ID: {}", user.getId());
+        List<Hotel> hotels = hotelRepository.findByOwner(user);
+
+        return hotels
+                .stream()
+                .map((element) -> modelMapper.map(element, HotelDTO.class))
+                .collect(Collectors.toList());
     }
 
 

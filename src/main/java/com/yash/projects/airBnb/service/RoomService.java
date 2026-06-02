@@ -10,4 +10,6 @@ public interface RoomService {
     List<RoomDTO> getAllRoomsInHotel(Long hotelId);
     RoomDTO getRoomById(Long roomId);
     void deleteRoomById(Long roomId);
+
+    RoomDTO updateRoomById(Long hotelId, Long roomId, RoomDTO roomDto);
 }
